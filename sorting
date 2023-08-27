@@ -1,0 +1,31 @@
+from watchdog.observers import Observer
+import os
+import time
+from watchdog.events import FileSystemEventHandler
+
+
+class Handler(FileSystemEventHandler):
+    def on_modifiend(self, event):
+        for filename in os.listdir(folder_track):
+        extension = filename.split(".")
+        if len(extension) > 1 and (extension[1].lower()== "jpg" or extension[1].lower()=="png"or extension[1].lower()=="svg"):
+        file = folder_track + '/' + filename
+        new_path = folder_dest + '/' + filename
+        os.rename(file, new_path)
+
+
+folder_trck = 'C:\Users\7789а\Desktop'
+folder_dest ='C:\Users\7789а\Desktop'
+ 
+handle = Handler()
+Observer = Observer()
+Observer.schedule(handle, folder_track, recursive=True)
+Observer.start()
+
+try:
+    while(True):
+        time.sleep(10)
+except KeyboardInterrupt:
+    Observer.stop()
+
+Observer.join()
